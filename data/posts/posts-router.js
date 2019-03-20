@@ -73,4 +73,31 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
+router.put("/:id", async (req, res) => {
+  console.log(req.params);
+  console.log(req.body);
+  if (req.body.text && req.body.user_id) {
+    try {
+      const post = await db.update(req.params.id, req.body);
+      console.log(post);
+      if (post) {
+        res.status(200).json(post);
+      } else {
+        res.status(204).json({ message: "The post could not be found" });
+      }
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: "Error updating the post" });
+    }
+  } else {
+    res
+      .status(404)
+      .json({ errorMessage: "Please provide text and user id for the post" });
+  }
+});
+
 module.exports = router;
+
+//first send function to asynchronous
+//then pull in await, which will wait for promise resolve
+//get it sdata, and from there do w/e u want for data...
