@@ -37,4 +37,25 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+router.post("/", async (req, res) => {
+  console.log(req.params);
+  console.log(req.body);
+  try {
+    const post = await db.insert(req.body);
+    res.status(201).json(post);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Error adding the post" });
+  }
+});
+
+router.delete("/:id", async (req, res) => {
+  console.log(req.params);
+  console.log(req.body);
+  try {
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 module.exports = router;
