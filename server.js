@@ -4,10 +4,12 @@
 const express = require("express");
 const server = express();
 const postsRouter = require("./data/posts/posts-router.js");
+const usersRouter = require("./data/users/users-router.js");
 
 server.use(express.json());
 
 server.use("/api/posts", postsRouter);
+server.use("/api/users", usersRouter);
 
 server.get("/", (req, res) => {
   res.send("testing testing 123");
