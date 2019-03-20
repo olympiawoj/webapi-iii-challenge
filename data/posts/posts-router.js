@@ -56,13 +56,21 @@ router.post("/", async (req, res) => {
   }
 });
 
-// router.delete("/:id", async (req, res) => {
-//   console.log(req.params);
-//   console.log(req.body);
-//   try {
-//   } catch (error) {
-//     console.log(error);
-//   }
-// });
+router.delete("/:id", async (req, res) => {
+  console.log(req.params);
+  console.log(req.body);
+  try {
+    const count = await db.remove(req.params.id);
+    console.log(count);
+    if (count > 0) {
+      res.status(200).json({ message: "The post has been removed" });
+    } else {
+      res.status(404).json({ errorMessage: "The post could not be found" });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ errorMessage: "Error removing the post" });
+  }
+});
 
 module.exports = router;
