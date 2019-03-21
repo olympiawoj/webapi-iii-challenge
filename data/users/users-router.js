@@ -85,7 +85,7 @@ router.delete("/:id", async (req, res) => {
 });
 
 //Update user
-router.put(":/id", async (req, res) => {
+router.put("/:id", async (req, res) => {
   console.log(req.body);
   if (!req.body.name) {
     res.status(404).json({ errorMessage: "Please provide name for user" });
