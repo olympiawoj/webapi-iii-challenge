@@ -4,6 +4,19 @@ const db = require("./userDb.js");
 
 const router = express.Router();
 
+// // Custom middleware, capitalize if string
+//charAT returns the character at the specified index in a string
+//slice selects elements starting at given start arg, returns selected elements in an array as new array obj
+function capUser(req, res, next) {
+  if (req.method === "POST" || req.method === "PUT") {
+    console.log("You are using capUser ok");
+    const name = req.body.name;
+    console.log(name);
+    req.body.name = name.charAt(0).toUpperCase() + name.slice(1);
+  }
+  next(); //calling next signals that the middleware has finished and should call the next middleware function.
+}
+
 //Get a list of all users
 router.get("/", async (req, res) => {
   try {
@@ -51,7 +64,7 @@ router.get("/:id/posts", async (req, res) => {
 });
 
 //Add a new user to user list
-router.post("/", async (req, res) => {
+router.post("/", capUser, async (req, res) => {
   console.log(req.params);
   console.log(req.body);
   if (!req.body.name) {
@@ -85,7 +98,7 @@ router.delete("/:id", async (req, res) => {
 });
 
 //Update user
-router.put("/:id", async (req, res) => {
+router.put("/:id", capUser, async (req, res) => {
   console.log(req.body);
   if (!req.body.name) {
     res.status(404).json({ errorMessage: "Please provide name for user" });
@@ -93,7 +106,7 @@ router.put("/:id", async (req, res) => {
     try {
       const user = await db.update(req.params.id, req.body);
       console.log(user);
-      if (user.length) {
+      if (user) {
         res.status(200).json({ user });
       } else {
         res.status(204).json({ message: "The user could not be found" });
