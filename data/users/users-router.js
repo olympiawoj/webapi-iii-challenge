@@ -14,8 +14,6 @@ router.get("/", async (req, res) => {
   }
 });
 
-module.exports = router;
-
 router.get("/:id", async (req, res) => {
   console.log(req.params);
   console.log(req.body);
@@ -34,3 +32,21 @@ router.get("/:id", async (req, res) => {
     res.status(500).json({ error: "The user's posts could not be retrieved" });
   }
 });
+
+router.post("/", async (req, res) => {
+  console.log(req.params);
+  console.log(req.body);
+  if (!req.body.name) {
+    res.status(404).json({ errorMessage: "Please provide name for user" });
+  } else {
+    try {
+      const user = await db.insert(req.body);
+      res.status(201).json(user); //201 = created
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ errorMessage: "Error adding the post" });
+    }
+  }
+});
+
+module.exports = router;
