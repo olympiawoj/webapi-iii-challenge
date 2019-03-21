@@ -49,4 +49,20 @@ router.post("/", async (req, res) => {
   }
 });
 
+router.delete("/:id", async (req, res) => {
+  console.log(req.params);
+  try {
+    const count = await db.remove(req.params.id);
+    console.log(count);
+    if (count > 0) {
+      res.status(200).json({ message: "The user has been removed" });
+    } else {
+      res.status(404).json({ errorMessage: "The user could not be found" });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ errorMessage: "Error removing this user" });
+  }
+});
+
 module.exports = router;
