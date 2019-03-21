@@ -7,12 +7,21 @@ const router = express.Router();
 // // Custom middleware, capitalize if string
 //charAT returns the character at the specified index in a string
 //slice selects elements starting at given start arg, returns selected elements in an array as new array obj
+//split method splits a STRING obj into an array of strings separated by separating the string into substrings using a specified string to determine where to make each split
+//Array JOIN method joins elements of an array into a string and return the string, elements separated by specified separator, default is comma
+
 function capUser(req, res, next) {
   if (req.method === "POST" || req.method === "PUT") {
     console.log("You are using capUser ok");
-    const name = req.body.name;
-    console.log(name);
-    req.body.name = name.charAt(0).toUpperCase() + name.slice(1);
+    let upperCaseArray = [];
+    const nameArray = req.body.name.split(" ");
+    console.log(nameArray);
+
+    for (name of nameArray) {
+      upperCaseArray.push(name.charAt(0).toUpperCase() + name.slice(1));
+    }
+
+    req.body.name = upperCaseArray.join(" ");
   }
   next(); //calling next signals that the middleware has finished and should call the next middleware function.
 }
